@@ -83,7 +83,7 @@ const App: React.FC = () => {
         </header>
 
         <main className="flex-1 overflow-y-auto">
-          {page === 'home' && <HomePage onSelectUnit={id => navigate('unit', id)} />}
+          {page === 'home' && <HomePage onSelectUnit={id => navigate('unit', id)} onNavigate={p => navigate(p as Page)} />}
 
           {page === 'unit' && unit && mode === 'browse'     && <UnitPage unit={unit} onFlashcards={startFlashcards} onQuiz={startQuiz} />}
           {page === 'unit' && unit && mode === 'flashcards' && <FlashcardMode unit={unit} mode={practiceMode} onExit={exitPractice} />}

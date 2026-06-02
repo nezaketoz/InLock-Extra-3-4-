@@ -17,7 +17,7 @@ const COLOR_MAP: Record<string, { card: string; badge: string; text: string }> =
   violet:  { card: 'border-violet-200 bg-violet-50 hover:bg-violet-100', badge: 'bg-violet-100 text-violet-700', text: 'text-violet-700' },
 };
 
-interface HomePageProps { onSelectUnit: (id: number) => void; }
+interface HomePageProps { onSelectUnit: (id: number) => void; onNavigate: (page: string) => void; }
 
 const UnitCard: React.FC<{ unit: typeof UNITS[0]; onClick: () => void }> = ({ unit, onClick }) => {
   const c = COLOR_MAP[unit.color] ?? COLOR_MAP['indigo'];
@@ -41,7 +41,7 @@ const UnitCard: React.FC<{ unit: typeof UNITS[0]; onClick: () => void }> = ({ un
   );
 };
 
-export const HomePage: React.FC<HomePageProps> = ({ onSelectUnit }) => (
+export const HomePage: React.FC<HomePageProps> = ({ onSelectUnit, onNavigate }) => (
   <div className="max-w-4xl mx-auto px-4 py-8 fade-up">
     {/* Hero */}
     <div className="bg-gradient-to-br from-indigo-600 to-purple-700 rounded-2xl p-7 mb-8 text-white shadow-lg">
@@ -103,30 +103,33 @@ export const HomePage: React.FC<HomePageProps> = ({ onSelectUnit }) => (
 
     {/* Quick links */}
     <h2 className="text-lg font-bold text-slate-700 mb-3">🔗 Cross-Unit Resources</h2>
+    <p className="text-xs text-slate-400 mb-3">Click any section to open all materials</p>
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2 mb-3">
-      {[
-        { emoji: '🎧', label: 'Listening Practice', color: 'bg-sky-50 border-sky-200 text-sky-700' },
-        { emoji: '✍️', label: 'UL4 Writing Exams', color: 'bg-rose-50 border-rose-200 text-rose-700' },
-        { emoji: '📖', label: 'UL4 Grammar', color: 'bg-violet-50 border-violet-200 text-violet-700' },
-        { emoji: '🏆', label: 'UL4 Final Practice', color: 'bg-amber-50 border-amber-200 text-amber-700' },
-      ].map(item => (
-        <div key={item.label} className={`${item.color} border rounded-xl p-3 text-center text-xs font-semibold`}>
+      {([
+        { emoji: '🎧', label: 'Listening Practice', color: 'bg-sky-50 border-sky-200 text-sky-700 hover:bg-sky-100', page: 'listening' },
+        { emoji: '✍️', label: 'UL4 Writing Exams', color: 'bg-rose-50 border-rose-200 text-rose-700 hover:bg-rose-100', page: 'writing' },
+        { emoji: '📖', label: 'UL4 Grammar & Other', color: 'bg-violet-50 border-violet-200 text-violet-700 hover:bg-violet-100', page: 'grammar' },
+        { emoji: '🏆', label: 'UL4 Final Practice', color: 'bg-amber-50 border-amber-200 text-amber-700 hover:bg-amber-100', page: 'final' },
+      ] as { emoji: string; label: string; color: string; page: string }[]).map(item => (
+        <button key={item.label} onClick={() => (onNavigate as (p: string) => void)(item.page)}
+          className={`${item.color} border rounded-xl p-3 text-center text-xs font-semibold transition-colors cursor-pointer`}>
           <p className="text-2xl mb-1">{item.emoji}</p>
           <p>{item.label}</p>
-        </div>
+        </button>
       ))}
     </div>
     <div className="grid grid-cols-2 sm:grid-cols-4 gap-2">
-      {[
-        { emoji: '📋', label: 'UL3 LE Practice', color: 'bg-teal-50 border-teal-200 text-teal-700' },
-        { emoji: '📝', label: 'UL3 Midterm', color: 'bg-teal-50 border-teal-200 text-teal-700' },
-        { emoji: '📖', label: 'UL3 Reading Packs', color: 'bg-teal-50 border-teal-200 text-teal-700' },
-        { emoji: '✍️', label: 'UL3 Writing', color: 'bg-teal-50 border-teal-200 text-teal-700' },
-      ].map(item => (
-        <div key={item.label} className={`${item.color} border rounded-xl p-3 text-center text-xs font-semibold`}>
+      {([
+        { emoji: '📋', label: 'UL3 LE Practice', color: 'bg-teal-50 border-teal-200 text-teal-700 hover:bg-teal-100', page: 'ul3-le' },
+        { emoji: '📝', label: 'UL3 Midterm', color: 'bg-teal-50 border-teal-200 text-teal-700 hover:bg-teal-100', page: 'ul3-midterm' },
+        { emoji: '📖', label: 'UL3 Reading Packs', color: 'bg-teal-50 border-teal-200 text-teal-700 hover:bg-teal-100', page: 'ul3-reading' },
+        { emoji: '✍️', label: 'UL3 Writing & Grammar', color: 'bg-teal-50 border-teal-200 text-teal-700 hover:bg-teal-100', page: 'ul3-writing' },
+      ] as { emoji: string; label: string; color: string; page: string }[]).map(item => (
+        <button key={item.label} onClick={() => (onNavigate as (p: string) => void)(item.page)}
+          className={`${item.color} border rounded-xl p-3 text-center text-xs font-semibold transition-colors cursor-pointer`}>
           <p className="text-2xl mb-1">{item.emoji}</p>
           <p>{item.label}</p>
-        </div>
+        </button>
       ))}
     </div>
   </div>
